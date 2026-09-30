@@ -11,20 +11,20 @@ Escriban debajo de cada pregunta. (Se evalúa después; el autograde no califica
 **A1.** `aplicarFactor` modifica el arreglo original, pero `copiaEscalada` no. Expliquen por qué, y qué es lo que
 realmente se copia cuando le pasan un arreglo a un método.
 
-> _Respuesta:_
+> _Respuesta: La diferencia es que 'aplicarFactor´ cambia directamente el arreglo que recibe, mientras 'copiaEscalada' hace una copia nueva y trabaja sobre esa. Esto pasa porque cuando pasamos un arreglo a un metodo, se esta trabajando sobre el mismo arreglo original, Por eso si uso 'aplicarFactor', los valores originales cambian, pero con 'copaEscalada' se mantiene igual.
 
 **A2.** ¿Por qué Java no permite tener `double calcularCosto(double kwh)` y `int calcularCosto(double kwh)` en la misma clase?
 ¿Qué versión de `calcularCosto` elige Java para la llamada `calcularCosto(5, 2.5, 0.1)` y por qué?
 
-> _Respuesta:_
+> _Respuesta: Java permite tener varios métodos con el mismo nombre siempre que sus parámetros sean diferentes. En nuestro caso usamos tres métodos llamados 'calcularCosto', pero cada uno recibe diferentes datos. Por ejemplo cuando usamos tres argumentos (5, 2.5, 0.1), java sabe que debe usar el método que recibe 'int dias', 'double kwhPorDia' y 'double tarfia'.
 
 **A3.** En `Medidor`, ¿para qué sirve `this(id, 0)` en el constructor de un solo parámetro? ¿Qué ventaja tiene frente a copiar y pegar el código del otro constructor?
 
-> _Respuesta:_
+> _Respuesta: 'this(id, 0)' sirve para llamar al otro constructor de la misma clase. En este caso, cuando solamente damos el 'id', automáticamente se usa '0' como lectura inicial. Me parece útil porque así no tenemos que volver a escribir toda la lógica del otro constructor y evitamos repetir código.
 
 **A4.** ¿Por qué los atributos de `Medidor` son `private`? ¿Qué protege `registrarLectura` y qué podría pasar si `lecturaActual` fuera público?
 
-> _Respuesta:_
+> _Respuesta: Los atributos de 'Medidor' están como 'private' para que no cualquier parte del programa pueda cambiarlos directamente. Por ejemplo, la lectura no puede simplemente modificarse a un valor menor, porque eso afectaría el cálculo del consumo. Por eso usamos 'registrarLectura', que se encarga de revisar primero si la nueva lectura es válida.
 
 ---
 
