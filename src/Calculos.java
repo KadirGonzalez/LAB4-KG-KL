@@ -12,11 +12,11 @@ public class Calculos {
     // ---------------------------------------------------------------
     // CONSTANTES DE SU VERSION (ver tabla en el README) - cambienlas
     // ---------------------------------------------------------------
-    public static final double VOLTAJE_MIN = 0;   // TODO segun su version
-    public static final double VOLTAJE_MAX = 0;   // TODO segun su version
-    public static final double TARIFA_BASE = 0;   // TODO segun su version ($/kWh)
-    public static final double LIMITE_BAJO = 0;   // TODO segun su version (kWh)
-    public static final double LIMITE_MEDIO = 0;  // TODO segun su version (kWh)
+    public static final double VOLTAJE_MIN = 108;
+    public static final double VOLTAJE_MAX = 132;
+    public static final double TARIFA_BASE = 0.15;
+    public static final double LIMITE_BAJO = 100;
+    public static final double LIMITE_MEDIO = 300;
 
     // ===============================================================
     // NIVEL 1 - Declaracion y retorno (basico)
@@ -24,14 +24,14 @@ public class Calculos {
 
     /** Potencia en watts: P = V * I. */
     public static double calcularPotencia(double voltaje, double corriente) {
-        // TODO
-        return 0;
+        
+        return voltaje * corriente;
     }
 
     /** true si VOLTAJE_MIN <= voltaje <= VOLTAJE_MAX (extremos incluidos). */
     public static boolean esVoltajeSeguro(double voltaje) {
-        // TODO
-        return false;
+        
+        return voltaje >= VOLTAJE_MIN && voltaje <= VOLTAJE_MAX;
     }
 
     /**
@@ -41,7 +41,8 @@ public class Calculos {
      * (sin tildes). Este metodo no devuelve nada (void).
      */
     public static void imprimirEncabezado(String cliente) {
-        // TODO
+        System.out.println("=== FACTURA DE ENERGIA ===");
+        System.out.println("Cliente: " + cliente);
     }
 
     /**
@@ -49,8 +50,13 @@ public class Calculos {
      * Ojo: todas las rutas deben terminar en un return.
      */
     public static String clasificarConsumo(double kwh) {
-        // TODO
-        return "";
+        if (kwh < LIMITE_BAJO) {
+            return "BAJO";
+        } else if (kwh < LIMITE_MEDIO){
+            return "MEDIO";
+        } else {
+            return "ALTO";
+        }
     }
 
     // ===============================================================
@@ -59,25 +65,42 @@ public class Calculos {
 
     /** Promedio de las lecturas. Si el arreglo esta vacio devuelve 0. */
     public static double promedio(double[] lecturas) {
-        // TODO
-        return 0;
+        if (lecturas.length == 0){
+            return 0;
+        }
+        double suma = 0;
+        for (int i = 0; i < lecturas.length; i++){
+            suma += lecturas[i];
+        }
+        return suma / lecturas.length;
     }
 
     /** MODIFICA el arreglo recibido: multiplica cada lectura por factor. No devuelve nada. */
     public static void aplicarFactor(double[] lecturas, double factor) {
-        // TODO
+        for (int i = 0; i < lecturas.length; i++){
+            lecturas[i] = lecturas[i] * factor;
+        }
     }
 
     /** NO modifica el original: devuelve un arreglo NUEVO con cada lectura * factor. */
-    public static double[] copiaEscalada(double[] lecturas, double factor) {
-        // TODO
-        return null;
-    }
+    public static double[] copiaEscalada(double[] lecturas, double factor) { 
+        double[] copia = new double[lecturas.length];
+        for (int i = 0; i < lecturas.length; i++) {
+            copia[i] = lecturas[i] * factor;
+        }
+        return copia;
+     }
 
     /** Cuenta cuantas lecturas son ESTRICTAMENTE mayores que el umbral. */
     public static int contarSobreUmbral(double[] lecturas, double umbral) {
-        // TODO
-        return 0;
+        int contador = 0;
+        for (int i = 0; i < lecturas.length; i++) {
+            if (lecturas[i] > umbral) {
+                contador++;
+            }
+        }
+
+        return contador;
     }
 
     // ===============================================================
@@ -87,20 +110,17 @@ public class Calculos {
 
     /** kwh * TARIFA_BASE */
     public static double calcularCosto(double kwh) {
-        // TODO
-        return 0;
+        return kwh * TARIFA_BASE;
     }
 
     /** kwh * tarifa */
     public static double calcularCosto(double kwh, double tarifa) {
-        // TODO
-        return 0;
+        return kwh * tarifa;
     }
 
     /** dias * kwhPorDia * tarifa */
     public static double calcularCosto(int dias, double kwhPorDia, double tarifa) {
-        // TODO
-        return 0;
+       return dias * kwhPorDia * tarifa;
     }
 
     // ===============================================================
@@ -110,14 +130,24 @@ public class Calculos {
 
     /** Resistencia equivalente en SERIE: suma de todas. Sin argumentos devuelve 0. */
     public static double resistenciaSerie(double... resistencias) {
-        // TODO
-        return 0;
+        double suma = 0;
+        for (int i =0; i < resistencias.length; i++){
+            suma += resistencias[i];
+        }
+        return suma;
     }
 
     /** Resistencia equivalente en PARALELO: 1 / (1/R1 + 1/R2 + ...). Sin argumentos devuelve 0. */
     public static double resistenciaParalelo(double... resistencias) {
-        // TODO
-        return 0;
+        if (resistencias.length == 0) {
+            return 0;
+            }
+            double sumaInversas = 0;
+            for (int i = 0; i < resistencias.length; i++){
+                sumaInversas += 1 / resistencias[i];
+            }
+            
+        return 1 / sumaInversas;
     }
 
     /**
@@ -126,7 +156,9 @@ public class Calculos {
      * Caso base: n <= 0 devuelve 0.
      */
     public static double sumaRecursiva(double[] datos, int n) {
-        // TODO
-        return 0;
+        if (n <= 0) {
+            return 0;
+        }
+        return datos[n -1] + sumaRecursiva(datos, n - 1);
     }
 }
